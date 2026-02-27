@@ -1,0 +1,29 @@
+# Newsletter template example
+template: newsletter
+output: newsletter_output.pdf
+page_size: a4
+
+title: "The Weekly Digest"
+subtitle: "Tech, culture and ideas worth sharing"
+author: "Editorial Team"
+date: "Issue 42 · Feb 2024"
+footer: "Subscribe at newsletter.example.com"
+tags:
+  - tech
+  - culture
+  - weekly
+body: |
+  Welcome to this week's edition of The Weekly Digest. We have a packed
+  issue covering the latest in technology, culture, and forward-looking ideas.
+
+  In our lead story, we explore how artificial intelligence is reshaping
+  creative industries — from music composition to architectural design.
+  Practitioners share their experiences of collaborating with AI tools and
+  what it means for the future of their work.
+
+  We also revisit the concept of "slow tech" — a growing movement that
+  advocates for more deliberate and mindful use of digital tools. Can stepping
+  back lead to greater productivity and wellbeing?
+
+  As always, we wrap up with five things worth reading, watching, and trying
+  this week. Enjoy!

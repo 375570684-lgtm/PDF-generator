@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdf-generator"
+version = "1.0.0"
+description = "A tool to generate beautiful one-page PDFs from text input"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "reportlab>=4.0.0",
+    "Pillow>=10.0.0",
+    "PyYAML>=6.0",
+]
+
+[project.scripts]
+pdf-generator = "cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

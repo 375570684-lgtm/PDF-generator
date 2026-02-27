@@ -1,0 +1,23 @@
+# Simple template example
+template: simple
+output: simple_output.pdf
+page_size: a4
+
+title: "My Document Title"
+subtitle: "A clean and minimal one-page PDF"
+author: "Jane Doe"
+date: "2024-01-15"
+footer: "Confidential — Page 1"
+tags:
+  - report
+  - draft
+  - 2024
+body: |
+  This is the first paragraph of your document. You can write as much text
+  as you like here and it will be automatically wrapped to fit the page.
+
+  Start a new paragraph by leaving a blank line in the body text. The
+  layout engine will handle spacing and line-breaking for you.
+
+  Add more content here. The simple template uses a clean, minimal design
+  with a bold header bar and readable typography throughout.

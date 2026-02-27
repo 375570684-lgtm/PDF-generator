@@ -1,0 +1,28 @@
+# Elegant template example
+template: elegant
+output: elegant_output.pdf
+page_size: a4
+
+title: "The Art of Simplicity"
+subtitle: "A reflection on design and clarity"
+author: "Marie Curie"
+date: "March 2024"
+footer: "Published by Typeset Press"
+tags:
+  - design
+  - philosophy
+  - essay
+body: |
+  In the pursuit of great design, simplicity stands as both the destination
+  and the journey. To strip away the unnecessary is not to impoverish, but
+  to reveal the essential truth beneath.
+
+  Every element on a page should earn its place. A line must justify its
+  presence; a colour must carry meaning; a word must bear weight. When each
+  component serves a purpose, the whole becomes greater than the sum of its
+  parts.
+
+  This is the paradox at the heart of elegance: that which appears effortless
+  demands the greatest effort to achieve. The invisible hand of the designer
+  guides the reader without being seen, creating an experience that feels
+  entirely natural.
