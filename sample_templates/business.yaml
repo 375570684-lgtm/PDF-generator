@@ -1,0 +1,28 @@
+# Business template example
+template: business
+output: business_output.pdf
+page_size: a4
+
+title: "Quarterly Business Report"
+subtitle: "Q4 2024 Financial Summary"
+author: "John Smith"
+date: "2024-12-31"
+footer: "Internal Use Only — Acme Corp"
+tags:
+  - finance
+  - quarterly
+  - Q4-2024
+body: |
+  This report provides an overview of the company's financial performance
+  for the fourth quarter of fiscal year 2024.
+
+  Revenue grew by 12% year-over-year, driven primarily by strong performance
+  in the enterprise segment. Operating margins improved to 18.4%, up from
+  16.2% in the same period last year.
+
+  Key highlights include the successful launch of three new product lines,
+  expansion into two new geographic markets, and the completion of our
+  strategic acquisition of TechStart Inc.
+
+  Looking ahead to 2025, we anticipate continued growth supported by our
+  expanded product portfolio and strengthened market position.
