@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Generator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 24px;
+      color: #333;
+    }
+    h1 { color: #1a73e8; margin-bottom: 4px; }
+    h2 { margin-top: 0; color: #444; font-size: 1.1rem; }
+    .subtitle { color: #666; margin-bottom: 32px; font-size: 0.95rem; }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      max-width: 720px;
+    }
+    label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
+    input[type=file], input[type=text], select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      background: #fafafa;
+    }
+    textarea { height: 120px; resize: vertical; font-family: monospace; }
+    button {
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #1558b0; }
+    button.danger { background: #e53935; }
+    button.danger:hover { background: #b71c1c; }
+    #templateList { list-style: none; padding: 0; margin: 0; }
+    #templateList li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    #templateList li:last-child { border-bottom: none; }
+    .template-name { font-weight: 500; }
+    .msg {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    .msg.success { background: #e8f5e9; color: #2e7d32; }
+    .msg.error   { background: #ffebee; color: #c62828; }
+    .hint { color: #888; font-size: 0.85rem; margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+  <h1>📄 PDF Generator</h1>
+  <p class="subtitle">Upload HTML templates, then generate PDF files from them.</p>
+
+  <!-- Upload Template -->
+  <div class="card">
+    <h2>⬆️ Upload Template</h2>
+    <p class="hint">Upload an HTML file as a template. Use <code>{{variableName}}</code> placeholders for dynamic content.</p>
+    <form id="uploadForm">
+      <label for="templateFile">Select HTML template file</label>
+      <input type="file" id="templateFile" name="template" accept=".html,text/html" required />
+      <button type="submit">Upload Template</button>
+    </form>
+    <div id="uploadMsg"></div>
+  </div>
+
+  <!-- Template List -->
+  <div class="card">
+    <h2>📁 Uploaded Templates</h2>
+    <ul id="templateList"><li>Loading…</li></ul>
+  </div>
+
+  <!-- Generate PDF -->
+  <div class="card">
+    <h2>🖨️ Generate PDF</h2>
+    <p class="hint">Select a template, provide JSON data to fill in placeholders, then download the generated PDF.</p>
+    <label for="templateSelect">Template</label>
+    <select id="templateSelect">
+      <option value="">-- select a template --</option>
+    </select>
+
+    <label for="dataJson">Data (JSON)</label>
+    <textarea id="dataJson" placeholder='{"name": "Alice", "date": "2024-01-01"}'>{}</textarea>
+
+    <button id="generateBtn">Generate PDF</button>
+    <div id="generateMsg"></div>
+  </div>
+
+  <script>
+    async function loadTemplates() {
+      const res = await fetch('/templates');
+      const { templates } = await res.json();
+      const list = document.getElementById('templateList');
+      const sel = document.getElementById('templateSelect');
+
+      list.innerHTML = '';
+      // Keep placeholder option
+      sel.innerHTML = '<option value="">-- select a template --</option>';
+
+      if (templates.length === 0) {
+        list.innerHTML = '<li style="color:#999">No templates uploaded yet.</li>';
+        return;
+      }
+      templates.forEach((name) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="template-name">${escHtml(name)}</span>
+          <button class="danger" onclick="deleteTemplate('${escHtml(name)}')">Delete</button>`;
+        list.appendChild(li);
+
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        sel.appendChild(opt);
+      });
+    }
+
+    async function deleteTemplate(name) {
+      if (!confirm(`Delete template "${name}"?`)) return;
+      const res = await fetch(`/templates/${encodeURIComponent(name)}`, { method: 'DELETE' });
+      const json = await res.json();
+      showMsg('uploadMsg', res.ok ? 'success' : 'error', json.message || json.error);
+      loadTemplates();
+    }
+
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch('/templates/upload', { method: 'POST', body: formData });
+      const json = await res.json();
+      showMsg('uploadMsg', res.ok ? 'success' : 'error', json.message || json.error);
+      if (res.ok) {
+        e.target.reset();
+        loadTemplates();
+      }
+    });
+
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+      const template = document.getElementById('templateSelect').value;
+      const dataText = document.getElementById('dataJson').value.trim();
+      if (!template) {
+        showMsg('generateMsg', 'error', 'Please select a template.');
+        return;
+      }
+      let data = {};
+      try {
+        data = JSON.parse(dataText || '{}');
+      } catch {
+        showMsg('generateMsg', 'error', 'Invalid JSON in data field.');
+        return;
+      }
+      showMsg('generateMsg', 'success', 'Generating PDF…');
+      try {
+        const res = await fetch('/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ template, data }),
+        });
+        if (!res.ok) {
+          const json = await res.json();
+          showMsg('generateMsg', 'error', json.error || 'Generation failed');
+          return;
+        }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = template.replace(/\.html$/, '') + '.pdf';
+        a.click();
+        URL.revokeObjectURL(url);
+        showMsg('generateMsg', 'success', 'PDF downloaded!');
+      } catch (err) {
+        showMsg('generateMsg', 'error', 'Network error: ' + err.message);
+      }
+    });
+
+    function showMsg(id, type, text) {
+      const el = document.getElementById(id);
+      el.className = 'msg ' + type;
+      el.textContent = text;
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    loadTemplates();
+  </script>
+</body>
+</html>
