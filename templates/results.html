@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Your Hints{% endblock %}
+{% block content %}
+  <section class="intro">
+    <h1>Your Guided Hints</h1>
+    <p>Click "Get a Hint" on each question below to reveal one step at a time. Try each step yourself before asking for the next one!</p>
+    <a class="btn-secondary" href="{{ url_for('index') }}">&larr; Upload another homework</a>
+  </section>
+
+  {% if not questions %}
+    <div class="alert">No questions were found.</div>
+  {% endif %}
+
+  {% for q in questions %}
+    <article class="question-card {{ q.subject }}">
+      <div class="question-card-header">
+        <span class="badge badge-{{ q.subject }}">{{ q.subject|capitalize }}</span>
+        <span class="topic-label">{{ q.topic_label }}</span>
+      </div>
+      <p class="question-text">{{ q.question }}</p>
+
+      <button type="button" class="btn-hint" id="hint-btn-{{ loop.index }}"
+        data-target="hint-list-{{ loop.index }}"
+        data-hints='{{ q.hints|tojson }}'>
+        Get a Hint
+      </button>
+      <ol class="hints" id="hint-list-{{ loop.index }}"></ol>
+    </article>
+  {% endfor %}
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='hints.js') }}"></script>
+{% endblock %}

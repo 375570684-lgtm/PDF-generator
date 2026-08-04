@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Homework Helper{% endblock %}
+{% block content %}
+  <section class="intro">
+    <h1>Stuck on your homework?</h1>
+    <p>
+      Upload a photo or PDF of your math or English homework (9th grade),
+      and get guided hints — one step at a time — instead of just the
+      answer. You're always in control of how much help you see.
+    </p>
+  </section>
+
+  {% if error %}
+    <div class="alert">{{ error }}</div>
+  {% endif %}
+
+  <form class="upload-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+    <div class="field">
+      <label for="homework_file">Upload a photo or PDF of your homework</label>
+      <input type="file" id="homework_file" name="homework_file" accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.tiff">
+    </div>
+
+    <div class="divider"><span>or</span></div>
+
+    <div class="field">
+      <label for="homework_text">Paste or type your homework text</label>
+      <textarea id="homework_text" name="homework_text" rows="6"
+        placeholder="1. Solve for x: 3x + 5 = 2x + 20&#10;2. What is the theme of the poem you read this week?"></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary">Get Guided Hints</button>
+  </form>
+
+  <section class="coverage">
+    <h2>What this covers</h2>
+    <div class="coverage-grid">
+      <div class="coverage-card math">
+        <h3>Math</h3>
+        <ul>
+          <li>Linear equations &amp; inequalities</li>
+          <li>Quadratic equations</li>
+          <li>Systems of equations</li>
+          <li>Slope &amp; the Pythagorean theorem</li>
+          <li>Exponent rules, evaluating functions</li>
+          <li>Simplifying expressions, basic geometry</li>
+        </ul>
+      </div>
+      <div class="coverage-card english">
+        <h3>English</h3>
+        <ul>
+          <li>Essay &amp; writing prompts</li>
+          <li>Reading comprehension</li>
+          <li>Grammar (fragments &amp; run-ons)</li>
+          <li>Vocabulary in context</li>
+          <li>Literary analysis (theme, character...)</li>
+        </ul>
+      </div>
+    </div>
+    <p class="disclaimer">
+      Hints are generated automatically with rules and math logic (no AI/LLM
+      involved), so they work best on clearly-written problems. If something
+      isn't recognized, you'll still get a general problem-solving strategy.
+    </p>
+  </section>
+{% endblock %}

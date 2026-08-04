@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Homework Helper{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('index') }}">📚 Homework Helper</a>
+    <span class="brand-sub">9th Grade Math &amp; English Tutor</span>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <p>This tool gives step-by-step hints so you can solve problems yourself — it won't just hand you answers.</p>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,226 @@
+:root {
+  --math-color: #2563eb;
+  --math-bg: #eff6ff;
+  --english-color: #7c3aed;
+  --english-bg: #f5f3ff;
+  --ink: #1f2430;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --answer-bg: #ecfdf5;
+  --answer-border: #10b981;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background: #fafafa;
+  line-height: 1.55;
+}
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.brand-sub {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.site-footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 1.5rem;
+}
+
+h1 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+h2 { font-size: 1.2rem; margin-top: 2.5rem; }
+
+.intro p { color: var(--muted); }
+
+.alert {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.upload-form {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.field { margin-bottom: 1rem; }
+
+.field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+input[type="file"], textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+textarea { resize: vertical; }
+
+.divider {
+  text-align: center;
+  color: var(--muted);
+  margin: 1rem 0;
+  position: relative;
+}
+
+.btn-primary, .btn-secondary, .btn-hint {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background: var(--math-color);
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  width: 100%;
+}
+
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-secondary {
+  display: inline-block;
+  background: none;
+  color: var(--math-color);
+  text-decoration: none;
+  padding: 0.4rem 0;
+}
+
+.coverage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 560px) {
+  .coverage-grid { grid-template-columns: 1fr; }
+}
+
+.coverage-card {
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border);
+}
+
+.coverage-card.math { background: var(--math-bg); }
+.coverage-card.english { background: var(--english-bg); }
+
+.coverage-card h3 { margin-top: 0; }
+.coverage-card ul { margin: 0; padding-left: 1.1rem; }
+
+.disclaimer {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}
+
+.question-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 1.1rem;
+}
+
+.question-card.math { border-left-color: var(--math-color); }
+.question-card.english { border-left-color: var(--english-color); }
+
+.question-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  color: #fff;
+}
+
+.badge-math { background: var(--math-color); }
+.badge-english { background: var(--english-color); }
+
+.topic-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.question-text {
+  white-space: pre-line;
+  font-size: 1.02rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.btn-hint {
+  background: #f3f4f6;
+  color: var(--ink);
+  padding: 0.5rem 1rem;
+}
+
+.btn-hint:hover { background: #e5e7eb; }
+.btn-hint:disabled { opacity: 0.6; cursor: default; }
+
+.hints {
+  margin: 0.8rem 0 0;
+  padding-left: 1.3rem;
+}
+
+.hints li {
+  margin-bottom: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  white-space: pre-line;
+}
+
+.hints li.answer {
+  background: var(--answer-bg);
+  border-left: 3px solid var(--answer-border);
+  font-weight: 600;
+}
